@@ -10,6 +10,7 @@ import (
 
 type Config struct {
 	Template         string
+	JS               bool
 	Dest             string
 	Watch            bool
 	Wait             *Wait

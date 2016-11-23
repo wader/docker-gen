@@ -18,6 +18,8 @@ import (
 	"strings"
 	"syscall"
 	"text/template"
+
+	"github.com/robertkrimen/otto"
 )
 
 func exists(path string) (bool, error) {
@@ -486,7 +488,12 @@ func GenerateFile(config Config, containers Context) bool {
 		filteredContainers = filteredRunningContainers
 	}
 
-	contents := executeTemplate(config.Template, filteredContainers)
+	var contents []byte
+	if config.JS {
+		contents = executeTemplateJS(config.Template, filteredContainers)
+	} else {
+		contents = executeTemplate(config.Template, filteredContainers)
+	}
 
 	if !config.KeepBlankLines {
 		buf := new(bytes.Buffer)
@@ -549,4 +556,34 @@ func executeTemplate(templatePath string, containers Context) []byte {
 		log.Fatalf("Template error: %s\n", err)
 	}
 	return buf.Bytes()
+}
+
+func executeTemplateJS(templatePath string, containers Context) []byte {
+	tmplReader, err := os.Open(templatePath)
+	if err != nil {
+		log.Fatalf("Unable to read js template: %s", err)
+	}
+	defer tmplReader.Close()
+
+	vm := otto.New()
+	script, err := vm.Compile(templatePath, tmplReader)
+	if err != nil {
+		log.Fatalf("Failed to compile js template: %s", err)
+	}
+
+	vm.Set("Containers", containers)
+	vm.Set("Docker", containers.Docker())
+	vm.Set("Env", containers.Env())
+	var output string
+	vm.Set("output", func(call otto.FunctionCall) otto.Value {
+		output, _ = call.Argument(0).ToString()
+		return otto.UndefinedValue()
+	})
+
+	_, err = vm.Run(script)
+	if err != nil {
+		log.Fatalf("Failed to run js template: %s", err)
+	}
+
+	return []byte(output)
 }

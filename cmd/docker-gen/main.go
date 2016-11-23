@@ -37,6 +37,7 @@ var (
 	tlsVerify               bool
 	tlsCertPath             string
 	wg                      sync.WaitGroup
+	js                      bool
 )
 
 func (strings *stringslice) String() string {
@@ -105,6 +106,7 @@ func initFlags() {
 	flag.StringVar(&tlsKey, "tlskey", filepath.Join(certPath, "key.pem"), "path to TLS client key file")
 	flag.StringVar(&tlsCaCert, "tlscacert", filepath.Join(certPath, "ca.pem"), "path to TLS CA certificate file")
 	flag.BoolVar(&tlsVerify, "tlsverify", os.Getenv("DOCKER_TLS_VERIFY") != "", "verify docker daemon's TLS certicate")
+	flag.BoolVar(&js, "js", false, "Run template as Javascript")
 
 	flag.Usage = usage
 	flag.Parse()
@@ -137,6 +139,7 @@ func main() {
 		}
 		config := dockergen.Config{
 			Template:         flag.Arg(0),
+			JS:               js,
 			Dest:             flag.Arg(1),
 			Watch:            watch,
 			Wait:             w,
