@@ -1,2 +1,12 @@
 github.com/BurntSushi/toml 056c9bc7be7190eaa7715723883caffa5f8fa3e4
-github.com/fsouza/go-dockerclient e0d22d30691bcc996eca51f729a4777b8c7dc2a8
+github.com/Microsoft/go-winio 24a3e3d3fc7451805e09d11e11e95d9a0a4f205e
+github.com/docker/docker 9dc0c8ec328c02eca56556c0a2bde1503e6a9aca
+github.com/docker/go-units 8a7beacffa3009a9ac66bad506b18ffdd110cf97
+github.com/fsouza/go-dockerclient 06afd508f2c79dec3a44c5c92b3c2d7c235b8e22
+github.com/gorilla/context 08b5f424b9271eedf6f9f0ce86cb9396ed337a42
+github.com/gorilla/mux 757bef944d0f21880861c2dd9c871ca543023cba
+github.com/hashicorp/go-cleanhttp ad28ea4487f05916463e2423a55166280e8254b5
+github.com/robertkrimen/otto bf1c3795ba078da6905fe80bfbc3ed3d8c36e9aa
+golang.org/x/net 4971afdc2f162e82d185353533d3cf16188a9f4e
+golang.org/x/sys 30237cf4eefd639b184d1f2cb77a581ea0be8947
+gopkg.in/sourcemap.v1 eef8f47ab679652a7d3a4ee34c34314d255d2536
